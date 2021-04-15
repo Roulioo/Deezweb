@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+    <html lang="en">
+        
+        <head>
+            <!-- Meta data -->
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+            <!-- Title -->
+            <title>Deezweb</title>
+
+            <!-- Library animate -->
+            <link rel="stylesheet" type="text/css" href="./lib/animate/animate.css">
+            
+            <!-- Favicon -->
+            <link rel="icon" href="./img/favicon.ico">
+
+            <!-- Styles -->
+            <link rel="stylesheet" type="text/css" href="./css/reset.css">
+            <link rel="stylesheet" type="text/css" href="./css/style.css">
+
+            <!-- Pagepiling style -->
+            <link rel="stylesheet" type="text/css" href="./lib/pagePiling.js/jquery.pagepiling.css" />
+
+            <!-- Bootstrap -->
+            <link rel="stylesheet" type="text/css" href="./lib/bootstrap/bootstrap.css">
+
+            <!-- Jquery -->
+            <script src="./lib/jquery/jquery.js"></script>
+
+            <!-- Default style -->
+            <style>
+                @import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
+                body {
+                    font-family: 'Caveat', cursive;
+                }
+            </style>
+        </head>
+
+
+        <body>
+            <!-- Third page favorites -->
+            <div class="favorites-section">
+
+                <div class="text-center mb-4">
+                    <h1>Mes favoris</h1>
+                    <p>Liste de mes titres favoris</p>
+                </div>
+
+                <div id="favorites" class="d-flex flex-column"></div>
+                    <script>
+                        let contentOfFavorites = ``;                
+
+                        // Get data in from localStorage
+                        let data = JSON.parse(localStorage.getItem('data'));
+
+                        // If any musics added to favorites
+                        if(data.length <= 0) {
+                            $('#favorites').html(
+                                `
+                                    <h1 class="default animated jackInTheBox delay-0.1s">
+                                        You need add music to your favorites to see anything, go to previous page<br> <a class="back" href="search.html">⬅</a>
+                                    </h1>
+                                `
+                            )
+                        }
+
+                        $(document).ready(function() {
+                            // -- Clear localStorage --  localStorage.clear(); //
+                            
+                            // Loop in array in localStorage
+                            if (data) {
+                                $.each(data, function(index, music) {                            
+                                    contentOfFavorites += `
+                                        <div class="d-flex favorites mb-3">
+                                            <h3>${music.title}</h3>
+                                            <span>${music.artist.name}</span>
+                                            <section class="d-flex">
+                                                <audio controls>
+                                                    <source src="${music.preview}">
+                                                </audio>
+                                                <img class="heart" src="./img/like-white.png" alt="Heart white">
+                                            </section>
+                                        </div>
+                                    `
+                                    $('#favorites').html(contentOfFavorites);
+                                })
+                            }
+
+                            // Click in heart button
+                            $(".heart").click(function(event) {
+                                // Values of localStorage
+                                let data = JSON.parse(localStorage.getItem('data'));
+
+                                // Index of element clicked, using to compare and delete element
+                                let indexed = $(this).parent().parent().index();
+
+                                // Loop in data on localStorage
+                                $.each(data, function(index, music) {
+                                    if (music.id) {
+                                        if (music.id === data[indexed].id) {    
+                                            // Deletion of music selected                                        
+                                            data.splice(indexed, 1);
+
+                                            // Set new array
+                                            localStorage.setItem('data', JSON.stringify(data));
+
+                                            // Refresh page in each deletion
+                                            window.location.reload(true);
+                                        }
+                                    }                            
+                                })
+
+                                // Condition to change heart in each click
+                                if ($(this).parent().context.outerHTML === '<img class="heart" src="./img/like-white.png" alt="Heart white">') { 
+                                    $(this).parent().context.outerHTML = '<img class="heart" src="./img/like-red.png" alt="Heart red">'; 
+                                } else {
+                                    $(this).parent().context.outerHTML = '<img class="heart" src="./img/like-white.png" alt="Heart white">'; 
+                                }
+                            })
+                        })
+                    </script>>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer>
+                <a class="arrow-left" href="search.html"><</a>
+                <a class="arrow-right" href="index.html">></a>
+            </footer>
+        </body>
+    </html>

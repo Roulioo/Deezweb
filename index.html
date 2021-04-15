@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+    <html lang="en">
+        
+        <head>
+            <!-- Meta data -->
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+            <!-- Title -->
+            <title>Deezweb</title>
+
+            <!-- Library animate -->
+            <link rel="stylesheet" type="text/css" href="./lib/animate/animate.css">
+            
+            <!-- Favicon -->
+            <link rel="icon" href="./img/favicon.ico">
+
+            <!-- Styles -->
+            <link rel="stylesheet" type="text/css" href="./css/reset.css">
+            <link rel="stylesheet" type="text/css" href="./css/style.css">
+
+            <!-- Pagepiling style -->
+            <link rel="stylesheet" type="text/css" href="./lib/pagePiling.js/jquery.pagepiling.css" />
+
+            <!-- Bootstrap -->
+            <link rel="stylesheet" type="text/css" href="./lib/bootstrap/bootstrap.css">
+
+            <!-- Jquery -->
+            <script src="./lib/jquery/jquery.js"></script>
+
+            <!-- Default style -->
+            <style>
+                @import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
+                body {
+                    font-family: 'Caveat', cursive;
+                }
+            </style>
+        </head>
+
+        <body>
+
+            <!-- First Page "Home" -->
+            <div class="home-section">
+
+                <!-- Navbar -->
+                <nav class="mt-3">
+                    <ul>
+                        <li class="animated jackInTheBox delay-1s" data-menuanchor="home">
+                            <a class="active" href="#">Home</a>
+                        </li>
+                        <li class="animated jackInTheBox delay-2s" data-menuanchor="search">
+                            <a href="search.html">Search a song</a>
+                        </li>
+                        <li class="animated jackInTheBox delay-3s" data-menuanchor="favorites">
+                            <a href="favorites.html">My favorites songs</a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Section -->
+                <section class="description">
+                    <h1 class="animated jackInTheBox delay-4s">My web app <span>"Deezweb"</span></h1>
+                    <div class="animated jackInTheBox delay-5s mt-4">
+                        <h2>Welcome in Deezweb</h2>
+                        <p class="mt-2">The goal of deezweb it's to listen music easily</p>
+                    </div>
+                </section>
+
+                <section id="index-music"></section>
+
+                <script>
+
+                    function getRandomInt(max) {
+                        return Math.floor(Math.random() * Math.floor(max));
+                    }
+
+                    // Get data in from localStorage
+                    let data = JSON.parse(localStorage.getItem('data'));
+
+                    // If any musics in favorites
+                    if(data.length <= 0) {
+                        $('#index-music').html(
+                            `
+                                <h1 class="text-center animated jackInTheBox delay-5s">
+                                    You have any musics in your favorites, try to add 😁
+                                </h1>
+                            `
+                        )
+                    }
+
+                    $(document).ready(function() {
+                        if(data.length > 0){
+                            // Random number
+                            let index = getRandomInt(data.length);
+
+                            // Content using to insert music
+                            let content = '';
+                   
+                            content = `
+                                <div class="index-music animated jackInTheBox delay-5s">
+                                    <h3>${data[index].title}</h3>
+                                    <span>${data[index].artist.name}</span>
+                                    <section class="d-flex">
+                                        <audio controls>
+                                            <source src="${data[index].preview}">
+                                        </audio>
+                                    </section>
+                                </div>
+                            `
+                            $('#index-music').html(content);
+                        }
+                    });
+
+                </script>
+
+            </div>
+
+            <!--  Footer -->
+            <footer>
+                <a class="arrow-left" href="favorites.html"><</a>
+                <a class="arrow-right" href="search.html">></a>
+            </footer>
+
+            <!-- Instrument -->
+            <script type="text/javascript" src="/js/instrument.js"></script>
+        </body>
+    </html>

@@ -1,0 +1,209 @@
+/****** STYLES ******/
+
+body {
+    background-color: black !important;
+    background-repeat: no-repeat;
+    color: white;
+    height: 100vh;
+    overflow: scroll !important;
+}
+
+/****** FIRST PAGE *****/
+
+.home-section ul{
+    display: flex;
+    justify-content: space-around;
+    font-size: 30px;
+}
+
+.home-section ul a{
+    color: white;
+    text-decoration: none;
+}
+
+.home-section ul a:hover {
+    color: #495057;
+}
+
+.home-section .description {
+    text-align: center;
+    margin-top: 30vh;
+    transform: translateY(-30%);
+    -webkit-transform: translateY(-30%);
+    -moz-transform: translateY(-30%);
+    -ms-transform: translateY(-30%);
+    -o-transform: translateY(-30%);
+    color: white;
+    font-weight: bold;
+}
+
+h1 {
+    font-size: 50px !important;
+}
+
+h2 {
+    font-size: 35px !important;
+}
+
+p {
+    font-size: 25px;
+    margin-bottom: 0 !important;
+}
+
+.home-section .pp-tableCell {
+    vertical-align: initial;
+}
+
+#index-music {
+    color: white;
+}
+
+.index-music {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+.index-music h3 {
+    margin-right: 15px;
+}
+
+.index-music span {
+    margin-right: 15px;
+}
+
+/****** SECOND PAGE *****/
+
+.search-title {
+    text-align: center;
+    color: white;
+}
+
+.form-inline span { 
+    font-size: 40px;
+    color: white;
+    text-align: center;
+}
+
+.form-inline input {
+    width: 300px !important;
+}
+
+.form-inline .btn {
+    color: black;
+    background-color: white;
+}
+
+#search {
+    color: white;
+}
+
+#search h3 {
+    font-size: 20px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 0;
+}
+
+span {
+    color: red;
+}
+
+#search div {
+    width: 200px;
+    height: 80px;
+    margin: 0 15px 5px 0;
+}
+
+audio {
+    height: 20px !important;
+    width: 165px !important;
+}
+
+.selectpicker {
+    height: 34px;
+    color: #495057;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+button[type="submit"] {
+    height: 34px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.default {
+    text-align: center;
+    margin-top: 30vh;
+    transform: translateY(-30%);
+    -webkit-transform: translateY(-30%);
+    -moz-transform: translateY(-30%);
+    -ms-transform: translateY(-30%);
+    -o-transform: translateY(-30%);
+}
+
+.heart {
+    height: 16px !important;
+    width: 16px !important;
+    cursor: pointer;
+    margin: 3px 0 0 7px;
+}
+
+.arrow-left{
+    font-size: 90px;
+    color: white;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+.arrow-right {
+    font-size: 90px;
+    color: white;
+    position: absolute;
+    margin-right: 15px;
+    right: 0;
+    bottom: 0;
+}
+
+footer a:hover {
+    text-decoration: none !important;
+    color: white !important;
+    cursor: pointer;
+}
+
+/****** THIRD PAGE ******/
+
+.text-center {
+    color: white;
+}
+
+.text-center p {
+    font-size: 18px;
+}
+
+#favorites h3 {
+    color: white;
+    margin: 0 20px;
+    font-size: 27px;
+}
+
+#favorites span {
+    margin-right: 20px;
+}
+
+#favorites {
+    color: white;
+}
+
+.back {
+    color: white;
+}
+
+#favorites a:hover {
+    text-decoration: none !important;
+    color: white !important;
+    cursor: pointer;
+}

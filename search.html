@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+    <html lang="en">
+        
+        <head>
+            <!-- Meta data -->
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+            <!-- Title -->
+            <title>Deezweb</title>
+
+            <!-- Library animate -->
+            <link rel="stylesheet" type="text/css" href="./lib/animate/animate.css">
+            
+            <!-- Favicon -->
+            <link rel="icon" href="./img/favicon.ico">
+
+            <!-- Styles -->
+            <link rel="stylesheet" type="text/css" href="./css/reset.css">
+            <link rel="stylesheet" type="text/css" href="./css/style.css">
+
+            <!-- Pagepiling style -->
+            <link rel="stylesheet" type="text/css" href="./lib/pagePiling.js/jquery.pagepiling.css" />
+
+            <!-- Bootstrap -->
+            <link rel="stylesheet" type="text/css" href="./lib/bootstrap/bootstrap.css">
+
+            <!-- Jquery -->
+            <script src="./lib/jquery/jquery.js"></script>
+
+            <!-- Default style -->
+            <style>
+                @import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
+                body {
+                    font-family: 'Caveat', cursive;
+                }
+            </style>
+        </head>
+
+
+        <body>
+            <!-- Second page "Search" -->
+            <div class="search-section">
+                <div class="search-title">
+                    <h1>Search</h1>
+                    <p class="mt-2">Search a title in Deezer using the form below:</p>
+                </div>
+
+                <form class="form-inline justify-between justify-content-around align-items-end">
+                    <!-- Search title  -->
+                    <div class="input-group d-flex flex-column mr-4">
+                        <span class="input-group-addon">Title :</span>
+                        <input type="search" class="form-control mt-2" name="search" placeholder="Eminem, Chief, Drake, 6ixi9ine, Future, Cardi ...">
+                    </div>
+
+                    <!-- Sort by ... -->
+                    <div class="sort d-flex flex-column">
+                        <span>Sort by :</span>
+                        <select class="selectpicker mt-2">
+                            <option value="album">Album</option>
+                            <option value="artist">Artist</option>
+                            <option value="title">Title</option>
+                            <option value="popularity">Popularity</option>
+                            <option value="rank">Rank</option>
+                        </select>                          
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit" class="btn">Submit</button>
+                </form>
+
+                <!-- Content of search and sort -->
+                <div class="d-flex flex-wrap justify-content-center mt-5" id="search"></div>
+
+                <script>
+                    $(document).ready(function() {
+
+                        // Content of results
+                        const results = $("#search");
+
+                        // Search of title
+                        const titleSearch = $("[name='search']")
+
+                        // Sorting selected
+                        const sortingSelected = $("option:selected");
+
+                        // Value of sorting
+                        let valueSorted = null; 
+
+                        // Values of localStorage
+                        let valuesOfLocalStorage = []
+
+                        // In first loading page
+                        if (valueSorted === null && titleSearch.val().length <=0) {
+                            results.html(
+                                `
+                                    <h1 class="default animated jackInTheBox delay-1s">
+                                        No search and sort using .... Let's go to test my web app ⌛
+                                    </h1>
+                                `
+                            )
+                        }
+
+                        // Event click on submit
+                        $(".btn").click(function(event) {
+                            // Prevent the refresh page
+                            event.preventDefault();
+
+                            // First click without the fields filled
+                            if (valueSorted === null && titleSearch.val().length <=0) {
+                                results.html(
+                                    `
+                                        <h1 class="default animated jackInTheBox delay-1s">
+                                            No search and sort using .... Let's go to test my web app ⌛
+                                        </h1>
+                                    `
+                                )
+                            }
+
+                            // Only title
+                            if(titleSearch.val().length > 0 && valueSorted === null){
+                                $.ajax({
+                                    url: `https://api.deezer.com/search?q="${titleSearch.val()}"&output=jsonp`,
+                                    dataType: "jsonp"
+                                }).then(result => {                                                      
+                                    if (result.total !== 0) {                                            
+                                        let contentOfSearch = '';
+                                        let arrayOfElements = [];
+
+                                        $.each(result.data, function(index, person) {
+                                            arrayOfElements.push(person);
+                                            contentOfSearch += `
+                                                <div class="d-flex music flex-column">
+                                                    <h3>${person.title}</h3>
+                                                    <span>${person.artist.name}</span>
+                                                    <section class="d-flex">
+                                                        <audio controls>
+                                                            <source src="${person.preview}">
+                                                        </audio>
+                                                        <img class="heart" src="./img/like-red.png" alt="Heart red">
+                                                    </section>
+                                                </div>
+                                            `
+                                            results.html(contentOfSearch);
+                                        })
+                            
+                                        // Click in heart button
+                                        $(".heart").click(function(event) {
+                                            // Index of element
+                                            let index = $(this).parent().parent().index('.music'); 
+
+                                            valuesOfLocalStorage.push(arrayOfElements[index]);
+
+                                            // Convert to string before saving in localStorage
+                                            localStorage.setItem("data", JSON.stringify(valuesOfLocalStorage));
+
+                                            // Condition to change heart in each click
+                                            if ($(this).parent().context.outerHTML === '<img class="heart" src="./img/like-red.png" alt="Heart red">') { 
+                                                $(this).parent().context.outerHTML = '<img class="heart" src="./img/like-white.png" alt="Heart white">'; 
+                                            } else {
+                                                $(this).parent().context.outerHTML = '<img class="heart" src="./img/like-red.png" alt="Heart red">'; 
+                                            }
+                                        })
+                                    } else { // No result with title                                            
+                                        results.html(
+                                            `
+                                                <h1 class="default animated jackInTheBox delay-0.1s">
+                                                    No results for this search ... 😑
+                                                </h1>
+                                            `
+                                        )
+                                    }
+                                });
+
+                                
+                            } else if (valueSorted !== null && titleSearch.val().length > 0) { // Title and sort                                    
+                                $.ajax({
+                                    url: `https://api.deezer.com/search?q="${titleSearch.val()}"&order=${valueSorted}&output=jsonp`,
+                                    dataType: "jsonp",
+                                }).then(result => {     
+                                    if (result.total !== 0) {                                            
+                                        let contentOfSearch = '';
+                                        let arrayOfElements = [];
+
+                                        $.each(result.data, function(index, person) {
+                                            arrayOfElements.push(person);
+                                            contentOfSearch += `
+                                                <div class="d-flex music flex-column">
+                                                    <h3>${person.title}</h3>
+                                                    <span>${person.artist.name}</span>
+                                                    <section class="d-flex">
+                                                        <audio controls>
+                                                            <source src="${person.preview}">
+                                                        </audio>
+                                                        <img class="heart" src="./img/like-red.png" alt="Heart red">
+                                                    </section>
+                                                </div>
+                                            `
+                                            results.html(contentOfSearch);
+                                        })
+                            
+                                        // Click in heart button
+                                        $(".heart").click(function(event) {                                    
+
+                                            // Index of element
+                                            let index = $(this).parent().parent().index('.music'); 
+                                            
+                                            valuesOfLocalStorage.push(arrayOfElements[index]);
+                                            
+                                            // Convert to string before saving in localStorage
+                                            localStorage.setItem("data", JSON.stringify(valuesOfLocalStorage));
+
+                                            // Condition to change heart in each click
+                                            if ($(this).parent().context.outerHTML === '<img class="heart" src="./img/like-red.png" alt="Heart red">') { 
+                                                $(this).parent().context.outerHTML = '<img class="heart" src="./img/like-white.png" alt="Heart white">'; 
+                                            } else {
+                                                $(this).parent().context.outerHTML = '<img class="heart" src="./img/like-red.png" alt="Heart red">'; 
+                                            }
+                                        })
+                                    } else { // No result with title and sort
+                                        results.html( 
+                                            `
+                                                <h1 class="default animated jackInTheBox delay-0.1s">
+                                                    No results for this search ... 😑
+                                                </h1>
+                                            `
+                                        )
+                                    }
+                                });
+                            } else if(valueSorted !== null && titleSearch.val().length <=0) { // No field filled
+                                results.html(
+                                    `
+                                        <h1 class="default animated jackInTheBox delay-0.5s">
+                                            You can't search a title with a sort without filled the title field 😊
+                                        </h1>
+                                    `
+                                )
+                            } else { // No title and sort
+                                results.html(
+                                    `
+                                        <h1 class="default animated jackInTheBox delay-1s">
+                                            No search and sort using .... Let's go to test my web app ⌛
+                                        </h1>
+                                    `
+                                )
+                            }
+                        })
+
+                        // Value of sorting
+                        $("select").change(function() {
+
+                            // Ascending, descending
+                            let asc = '_ASC';
+                            let desc = '_DESC';
+
+                            let sorting = $(this).find(":selected").text();
+
+                            switch(sorting) {
+                                case 'Album':
+                                    valueSorted = sorting.toUpperCase() + asc;
+                                    break;   
+                                case 'Artist':
+                                    valueSorted = sorting.toUpperCase() + asc;
+                                    break;
+                                case 'Title':
+                                    valueSorted = 'TRACK' + asc; 
+                                    break;
+                                case 'Popularity':
+                                    valueSorted = 'RATING' + asc;
+                                    break;
+                                case 'Rank':
+                                    valueSorted = sorting.toUpperCase() + asc;
+                                    break;
+                                default: 
+                                    'Case not implemented';
+                            }
+                        })
+                    })
+                </script>
+
+                <!--  Footer -->
+                <footer>
+                    <a class="arrow-left" href="index.html"><</a>
+                    <a class="arrow-right" href="favorites.html">></a>
+                </footer>
+            </div>
+        </body>
+    </html>
