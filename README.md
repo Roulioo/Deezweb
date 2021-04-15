@@ -1,19 +1,23 @@
 # Deezweb
 
-My web application named Deez We, used to search music and listen them
+Web application named Deezweb, user can search musique, add to favorites, remove, listen, etc ...
 
-## Test my webApp
+# Technologies
 
-When you have cloned my file, you only need to write this in your terminal or console :
+- HTML
+- CSS
+- Javascript
+- jQuery
+- Bootstrap
 
-NODE.JS is required : https://nodejs.org/en/
+# How to test
 
-For live-server --> npm install --global live-server
+1. Go to current folder of project in terminal
+2. Run "live-server"
+3. Server will be launched for me is (http://127.0.0.1:8080/)
+4. Go to your url
+5. Enjoy !
 
-For http-server --> npm install --global http-server
+# Information
 
-`live-server` or `http-server`
-
-After in your url go to : `http://127.0.0.1:8080`
-
-If you have a problem or code improvements, I am open to any discussion! Enjoy ! 🙂
+I can be contacted for any information by email: julioocesarr@outlook.fr
